@@ -5,15 +5,17 @@
 #   -> set the value of the inverse of the matrix
 #   -> get the value of the inverse of the matrix
 
+#inv_mat is the variable that stores the inverse of the matrix.
+#Thus, we can distinguish between function (solve) and result (matrix)
 makeCacheMatrix <- function(x = matrix()) {
-    m <- NULL
+    inv_mat <- NULL
     set <- function(y) {
         x <<- y
-        m <<- NULL
+        inv_mat <<- NULL
     }
     get <- function() x
-    setsolve <- function(solve) m <<- solve
-    getsolve <- function() m
+    setsolve <- function(solve) inv_mat <<- solve
+    getsolve <- function() inv_mat
     list(set = set, get = get,
          setsolve = setsolve,
          getsolve = getsolve)
@@ -21,19 +23,19 @@ makeCacheMatrix <- function(x = matrix()) {
 
 
 #The following function calculates the inverse of the special "matrix" created with the above function. 
-#However, it first checks to see if the inverse has already been calculated. 
-#If so, it gets the inverse from the cache and skips the computation. 
+#However, it first checks to see if the inverse (inv_mat) has already been calculated. 
+#If so, it gets the inverse from the cache ( return(inv_mat) )and skips the computation. 
 #Otherwise, it calculates the inverse of the matrix and sets it in the cache via the setsolve function
 
 
 cacheSolve <- function(x, ...) {
-    m <- x$getsolve()
-    if(!is.null(m)) {
+    inv_mat <- x$getsolve()
+    if(!is.null(inv_mat)) {
         message("getting cached data")
-        return(m)
+        return(inv_mat)
     }
     data <- x$get()
-    m <- solve(data, ...)
-    x$setsolve(m)
-    m
+    inv_mat <- solve(data, ...)
+    x$setsolve(inv_mat)
+    inv_mat
 }
